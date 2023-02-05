@@ -1,0 +1,26 @@
+Casual:
+Given a string and a character to search for
+Split the string into an array of characters
+Create an integer to track occurences of the character
+Iterate through each character in the array
+  If character quals to the one that's being searched for
+    Increase the occurences integer by 1
+    If occurences equals 3
+      Return current position in the array
+Return nil
+
+---
+
+Formal:
+START
+Given an a string called "string"
+SPLIT string into an array called "string_array"
+SET iterator = 0
+Given a character called "character"
+SET occurences = 0
+WHILE iterator < length of array
+  IF character at space "iterator" == character
+    occurences += 1
+    IF occurences == 3
+      RETURN iterator
+ RETURN "nil"

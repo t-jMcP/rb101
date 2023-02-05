@@ -1,0 +1,24 @@
+Casual:
+Given an array of integers
+Create a new empty array to store the alternating values
+Iterate through each element in the array one by one
+  If element's position is even
+    Add it to the new array
+  Else skip to the next element
+Return the new array
+
+---
+
+Formal:
+START
+
+Given an array of integers called "array"
+SET iterator = 0
+SET alternating_integers = []
+WHILE iterator < length of array
+  IF iterator is even
+    PUSH integer at space "iterator" to alternating_integers
+  iterator = iterator +1
+RETURN alternating_integers
+
+END

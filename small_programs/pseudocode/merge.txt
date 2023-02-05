@@ -1,0 +1,23 @@
+CASUAL:
+Given two arrays of numbers
+Create an empty array to store the result of the merge
+Iterate through each element in the first array
+  Add element from the first array to the merged array
+  Add element at the same position of the second array to the merged array
+Return merged array
+
+---
+
+FORMAL:
+START
+
+Given two arrays of integers ("array1", "array2")
+SET iterator = 0
+SET merged_array = []
+WHILE iterator < length of array1
+  PUSH integer at space iterator from array1 to merged_array
+  PUSH integer at space iterator from array2 to merged array
+  iterator += 1
+RETURN merged_array
+
+END

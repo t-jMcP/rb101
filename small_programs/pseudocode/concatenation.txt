@@ -1,0 +1,21 @@
+Casual:
+Given an array of strings
+Create a new empty string to store the concatenation
+Iterate through the array elements one by one
+  For each element, concatenate it to the string
+Return the concatenated string
+
+---
+
+Formal:
+START
+
+Given an array of strings called "array"
+SET iterator = 0
+SET concatenated_string = ""
+WHILE iterator < length of array
+  Concatenate string at space "iterator" into concatenated_string
+  iterator = iterator + 1
+RETURN concatenated_string
+
+END

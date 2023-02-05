@@ -1,0 +1,15 @@
+Casual:
+Given two integers
+Sum the integers together and store the sum
+Return the sum
+
+---
+
+Formal:
+START
+
+Given two integers ("integer1" and "integer2")
+SET sum = integer1 + integer2
+Return sum
+
+END
