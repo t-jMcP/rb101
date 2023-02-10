@@ -3,18 +3,17 @@ def prompt(message)
 end
 
 def valid_number?(number)
-  number.to_i != 0 
+  number.to_i != 0
 end
-
 
 def operation_to_message(op)
   case op
-    when "add" then "adding"
-    when "subtract" then "subtracting"
-    when "multiply" then "multiplying"
-    when "divide" then "dividing"
-  end 
-end   
+  when "add" then "adding"
+  when "subtract" then "subtracting"
+  when "multiply" then "multiplying"
+  when "divide" then "dividing"
+  end
+end
 
 prompt("Welcome! Please enter your name:")
 name = ''
@@ -24,18 +23,16 @@ loop do
     prompt("Please provide a name")
   else
     break
-  end    
+  end
 end
 
 prompt("Hello #{name}")
 
 # Repeat until user ends program
 loop do
-
   number1 = ''
   # Repeat until user provides valid first number
   loop do
-    
     # Get first number from user
     prompt("Please enter first number:")
     number1 = gets.chomp.to_f
@@ -45,13 +42,12 @@ loop do
       break
     else
       prompt("Invalid input. Please provide a number")
-    end    
+    end
   end
 
   number2 = ''
   # Repeat until user provides valid first number
   loop do
-
     # Get second number from user
     prompt("Please enter second number")
     number2 = gets.chomp.to_f
@@ -62,11 +58,10 @@ loop do
     else
       prompt("Invalid input. Please provide a number")
     end
-  end  
+  end
 
   # Repeat until user provides valid operation
   loop do
-
     # Get operation from user
     operator_prompt = <<-MSG
       What operation would you like to perform?
@@ -82,12 +77,12 @@ loop do
 
     # Perform selected operation and store result
     result = case operation
-      when "add" then number1 + number2
-      when "subtract" then number1 - number2  
-      when "multiply" then number1 * number2
-      when "divide" then number1 / number2
-      else "error"  
-    end
+             when "add" then number1 + number2
+             when "subtract" then number1 - number2
+             when "multiply" then number1 * number2
+             when "divide" then number1 / number2
+             else "error"
+             end
 
     # Print valid result
     if result != "error"
