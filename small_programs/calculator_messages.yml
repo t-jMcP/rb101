@@ -1,0 +1,34 @@
+en:
+  name_prompt: "Welcome! Please enter your name:"
+  name_reprompt: "Please provide a name"
+  greeting: "Hello"
+  number1_prompt: "Please enter first number:"
+  number2_prompt: "Please enter second number:"
+  invalid_number: "Invalid input. Please provide a number"
+  operation_prompt: "What operation would you like to perform?\n
+    add\n
+    subtract\n
+    multiply\n
+    divide"
+  operating_message: " the two numbers..."
+  result: "The result is "
+  invalid_operation: "Invalid operation"
+  repeat_prompt: "Do you want to perform another calculation? (Press Y to confirm)"
+  goodbye: "Goodbye"
+fr:
+  name_prompt: "Bienvenue ! Veuillez saisir votre nom :"
+  name_reprompt: "Veuillez indiquer un nom"
+  greeting: "Bonjour"
+  number1_prompt: "Veuillez saisir le premier chiffre :"
+  number2_prompt: "Veuillez entrer le deuxième numéro :"
+  invalid_number: "Entrée invalide. Veuillez fournir un numéro"
+  operation_prompt: "Quelle opération souhaitez-vous effectuer ?\n
+    add\n
+    subtract\n
+    multiply\n
+    divide"
+  operating_message: " les deux nombres..."
+  result: "Le résultat est "
+  invalid_operation: "Opération invalide"
+  repeat_prompt: "Souhaitez-vous effectuer un autre calcul ? (Appuyez sur Y pour confirmer)"
+  goodbye: "Au revoir" 
