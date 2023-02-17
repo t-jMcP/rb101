@@ -1,0 +1,134 @@
+---
+HIGH LEVEL PSEUDOCODE
+---
+
+CASUAL:
+Send a welcome message
+While user wants to keep going
+  Ask them for their loan amount and store in a variable
+    Check that it's a valid number
+  Ask them for their APR  and store in a variable
+    Check that it's a valid percentage
+  Ask them for their loan duration in years and store in a variable
+    Check that it's a valid number
+  Calculate the monthly payment using the value of the three variables
+  Display result to user
+  Ask if they want to repeat
+
+
+FORMAL:
+START
+
+PRINT "Welcome to Mortgage Calculator!"
+SET continue = true
+WHILE continue = true
+  loan_valid = false
+  WHILE loan_valid = false
+    loan_amount = GET "Enter your loan amount in GBP as a whole number (e.g. 100000):"
+    loan_valid = SUBPROCESS "valid_number" (loan_amount)
+    IF loan_valid == false
+      PRINT "Invalid loan amount. Please provide a number"
+
+  apr_valid = false
+  WHILE apr_valid = false
+    apr = GET "Enter your annual percentage rate as a percentage (e.g. 5%):"
+    apr_valid = SUBPROCESS "valid_percentage" (apr)
+    IF apr_valid == false
+      PRINT "Invalid APR. Please provide a percentage"
+
+  duration_valid = false
+  WHILE duration_valid = false
+    duration_years = GET "Enter your loan duration in years, rounding to the nearest year (e.g. 10)"
+    duration_valid = SUBPROCESS "valid_number" (duration_years)
+    IF duration_years == false
+      PRINT "Invalid loan duration. Please provide a number"
+
+  monthly_payment = SUBPROCESS "payment_calculation" (loan_amount, apr, duration_years)
+  PRINT "Your monthly payment amount is monthly_payment
+  repeat = GET "Do you want to try again? (Enter Y to confirm)"
+  IF repeat != Y
+    continue = false
+
+END  
+
+---
+VALID NUMBER SUBROUTINE
+---
+
+CASUAL:
+Convert user input to integer, then back to a string
+Compare the result to the original string
+  If the two are the same, return true
+  Otherwise, return false
+
+
+FORMAL:
+START
+
+SET user_input_string = first argument from subprocess invocation
+SET integer_conversion = SUBPROCESS "convert_to_integer" (input_string)
+SET string_conversion = SUBPROCESS "convert_to_string" (integer_conversion)
+IF string_conversion == input_string
+  RETURN true
+ELSE
+  RETURN false
+
+END  
+
+---
+VALID PERCENTAGE SUBROUTINE
+---
+
+CASUAL:
+Remove percentage sign from user input and store what remains in a variable
+Check variable is a valid number
+  If not, return false
+Check that the variable is between 0 and 100
+  If so, return true
+  Otherwise return false
+
+
+FORMAL:
+START
+
+SET percentage_input = first argument from subprocess invocation
+SET number = SUBPROCESS "remove_percentage_sign" (percentage_input)
+SET valid = SUBPROCESS "valid_number" (number)
+IF valid == false 
+  RETURN false
+If number > 0
+  RETURN true
+ELSE
+  RETURN false  
+
+END
+
+---
+CALCULATION SUBROUTINE
+---
+
+CASUAL:
+Convert APR amount to decimal
+Convert APR to monthly interest rate
+Convert loan duration to years
+Apply monthly payment formula
+Return result
+
+
+FORMAL:
+START
+
+SET loan_amound = first argument from subprocess invocation
+
+SET APR_percentage = second argument from subprocess invocation
+SET APR_number = SUBPROCESS "convert_to_integer" (APR_percentage)
+SET APR_decimal = APR_percentage / 100
+SET monthly_interest_rate = APR_decimal / 12
+
+SET loan_duration_years = third argument from subprocess invocation
+SET loan_duration_months = loan_duration_years * 12
+
+SET monthly_payment = loan_amount * (monthly_interest_rate / (1 - (1 + monthly_interest_rate)**(-loan_duration_months)))
+RETURN monthly_payment
+
+END
