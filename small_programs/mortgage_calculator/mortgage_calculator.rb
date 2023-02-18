@@ -1,94 +1,95 @@
+def prompt(message)
+  puts("=> #{message}")
+end
+
 def valid_number?(input_string)
-  # Check for valid number greater than 0
-  input_string.to_i.to_s == input_string && input_string.to_i > 0
+  (input_string.to_i.to_s == input_string && input_string.to_i > 0) ||
+    (input_string.to_f.to_s == input_string && input_string.to_f > 0)
 end
 
 def valid_percentage?(input_string)
   # Remove percentage sign from input
   number = input_string.split("%")[0]
+  valid_number?(number)
+end
 
-  # Check for valid number
-  if valid_number?(number)
-    true
-  else
-    false
+def get_loan_amount
+  loan_amount = ''
+
+  # Repeatedly prompt until user provides a valid loan amount
+  loop do
+    prompt("Please enter your loan amount in a number format (e.g. 100000):")
+    loan_amount = gets.chomp
+    if valid_number?(loan_amount) == false
+      prompt("Invalid loan amount. Please provide a positive number")
+    else
+      break
+    end
   end
+
+  loan_amount
+end
+
+def get_apr
+  apr = ''
+
+  # Repeatedly prompt until user provides a valid percentage rate
+  loop do
+    prompt("Please enter your APR in a percentage format (e.g. 5%):")
+    apr = gets.chomp
+    if valid_percentage?(apr) == false
+      prompt("Invalid APR. Please provide a percentage")
+    else
+      break
+    end
+  end
+
+  apr
+end
+
+def get_loan_duration
+  duration_years = ''
+
+  # Repeatedly prompt until user provides a loan duration
+  loop do
+    prompt("Enter your loan duration in years:")
+    duration_years = gets.chomp
+    if valid_number?(duration_years) == false
+      prompt("Invalid loan duration. Please provide a positive number")
+    else
+      break
+    end
+  end
+
+  duration_years
 end
 
 def payment_calculation(loan_amount, apr, duration_years)
-  # Convert loan amount to integer
-  loan_amount_integer = loan_amount.to_i
-
-  # Convert APR to decimal
+  loan_amount_float = loan_amount.to_f
   apr_decimal = apr.to_f / 100
-
-  # Convert from annual to monthly interest rate
   monthly_interest_rate = apr_decimal / 12
+  duration_months = duration_years.to_f * 12
 
-  # Convert loan duration to months
-  duration_months = duration_years.to_i * 12
-
-  # Calculate and return monthly payment
-  loan_amount_integer * (monthly_interest_rate /
-  (1 - (1 + monthly_interest_rate)**(-duration_months)))
+  # Formula to calculate monthly payment
+  loan_amount_float *
+    (monthly_interest_rate /
+    (1 - (1 + monthly_interest_rate)**(-duration_months)))
 end
 
-# Print welcome message
-puts "Welcome to Mortgage Calculator!"
+prompt("Welcome to Mortgage Calculator!")
 
-# Repeat until user ends the program
 loop do
-  loan_amount = ''
-  # Repeat until user provides a valid loan amount
-  loop do
-    puts "Please enter your loan amount in GBP as a whole number (e.g. 100000):"
-    loan_amount = gets.chomp
+  loan_amount = get_loan_amount
+  apr = get_apr
+  duration_years = get_loan_duration
 
-    # Check loan amount is a valid number
-    if valid_number?(loan_amount) == false
-      puts "Invalid loan amount. Please provide a positive number"
-    else
-      break
-    end
-  end
-
-  apr = ''
-  # Repeat until user provides a valid APR
-  loop do
-    puts "Please enter your APR in a percentage format (e.g. 5%):"
-    apr = gets.chomp
-
-    # Check APR is a valid percentage
-    if valid_percentage?(apr) == false
-      puts "Invalid APR. Please provide a percentage"
-    else
-      break
-    end
-  end
-
-  duration_years = ''
-  # Repeat until user provides a valid loan duration
-  loop do
-    puts "Enter your loan duration in years, rounding to the nearest year:"
-    duration_years = gets.chomp
-
-    # Check loan duration is a valid number
-    if valid_number?(duration_years) == false
-      puts "Invalid loan duration. Please provide a positive number"
-    else
-      break
-    end
-  end
-
-  # Calculate monthly payment
   monthly_payment = payment_calculation(loan_amount, apr, duration_years)
-  puts "Your monthly payment will be £#{monthly_payment}"
+  prompt("Your monthly payment will be £#{format('%.2f', monthly_payment)}")
 
-  # Check if user wants to repeat
-  puts "Do you want to try again? (Enter Y to confirm)"
+  prompt("Do you want to try again? (Enter Y to confirm)")
   repeat = gets.chomp
   if repeat != "Y"
-    puts "Goodbye!"
+    prompt("Goodbye!")
     break
   end
 end
