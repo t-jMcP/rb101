@@ -67,6 +67,14 @@ def calculate_payment(loan_amount, apr, duration_years)
     (1 - (1 + monthly_interest_rate)**(-duration_months)))
 end
 
+def display_results(loan_amount, apr, duration_years,
+                    monthly_payment, total_payment)
+  prompt("For a loan of £#{loan_amount}, APR of #{apr} " \
+    "and payback period of #{duration_years} years...")
+  prompt("Your monthly payment will be £#{format('%.2f', monthly_payment)}")
+  prompt("In total you will pay £#{format('%.2f', total_payment)}")
+end
+
 prompt("Welcome to Mortgage Calculator!")
 
 loop do
@@ -77,10 +85,8 @@ loop do
   monthly_payment = calculate_payment(loan_amount, apr, duration_years)
   total_payment = monthly_payment * duration_years.to_f * 12
 
-  prompt("For a loan of £#{loan_amount}, APR of #{apr} " \
-    "and payback period of #{duration_years} years...")
-  prompt("Your monthly payment will be £#{format('%.2f', monthly_payment)}")
-  prompt("In total you will pay £#{format('%.2f', total_payment)}")
+  display_results(loan_amount, apr, duration_years, monthly_payment,
+                  total_payment)
 
   prompt("Do you want to try again? (Enter Y to confirm)")
   repeat = gets.chomp
