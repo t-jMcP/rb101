@@ -1,43 +1,51 @@
 OPTIONS = ["rock", "paper", "scissors", "lizard", "spock"]
 
-RESULTS = {
-  ["rock", "rock"] => "draw",
-  ["rock", "paper"] => "loss",
-  ["rock", "scissors"] => "win",
-  ["rock", "lizard"] => "win",
-  ["rock", "spock"] => "loss",
-  ["paper", "rock"] => "win",
-  ["paper", "paper"] => "draw",
-  ["paper", "scissors"] => "loss",
-  ["paper", "lizard"] => "loss",
-  ["paper", "spock"] => "win",
-  ["scissors", "rock"] => "loss",
-  ["scissors", "paper"] => "win",
-  ["scissors", "scissors"] => "draw",
-  ["scissors", "lizard"] => "win",
-  ["scissors", "spock"] => "loss",
-  ["lizard", "rock"] => "loss",
-  ["lizard", "paper"] => "win",
-  ["lizard", "scissors"] => "loss",
-  ["lizard", "lizard"] => "draw",
-  ["lizard", "spock"] => "win",
-  ["spock", "rock"] => "win",
-  ["spock", "paper"] => "loss",
-  ["spock", "scissors"] => "win",
-  ["spock", "lizard"] => "loss",
-  ["spock", "spock"] => "draw"
+WINNERS = {
+  rock: ["scissors", "lizard"],
+  paper: ["rock", "spock"],
+  scissors: ["paper", "lizard"],
+  lizard: ["paper", "spock"],
+  spock: ["rock", "scissors"]
 }
 
 def prompt(message)
   puts "=> #{message}"
 end
 
-def display_results(user_choice, computer_choice)
-  result = RESULTS[[user_choice, computer_choice]]
+def convert_abbreviations(user_choice)
+  # Store first letter of each option
+  abbreviations = []
+  OPTIONS.each{|option| abbreviations << option[0]}
 
-  if result == "win"
+  # Reprompt user if it's not clear whether they meant scissors or spock
+  if user_choice == "s"
+    prompt("Did you mean scissors or spock? Please specify")
+    user_choice = gets.chomp.downcase
+  
+  # If user provided valid abbreviation, convert to full answer   
+  elsif abbreviations.include?(user_choice)
+    user_choice = OPTIONS[abbreviations.find_index(user_choice)]
+  end
+  user_choice
+end
+
+def get_choice
+  user_choice = ""
+
+  loop do
+    prompt("Please choose one of: #{OPTIONS.join(', ')}")
+    user_choice = convert_abbreviations(gets.chomp.downcase)
+    break if OPTIONS.include?(user_choice)
+    prompt("That's not a valid option. Please try again")
+  end
+
+  user_choice
+end
+
+def display_results(user_choice, computer_choice)
+  if WINNERS[user_choice.to_sym].include?(computer_choice)
     prompt("You win. Congratulations!")
-  elsif result == "loss"
+  elsif WINNERS[computer_choice.to_sym].include?(user_choice)
     prompt("Computer wins. Better luck next time!")
   else
     prompt("It's a tie!")
@@ -47,15 +55,9 @@ end
 prompt("Welcome to Rock Paper Scissors")
 
 loop do
-  user_choice = ""
-  loop do
-    prompt("Please choose one of: #{OPTIONS.join(', ')}")
-    user_choice = gets.chomp.downcase
-    break if OPTIONS.include?(user_choice)
-    prompt("That's not a valid option. Please try again")
-  end
-
+  user_choice = get_choice
   prompt("You chose #{user_choice}")
+
   computer_choice = OPTIONS.sample
   prompt("Computer chose #{computer_choice}")
 
