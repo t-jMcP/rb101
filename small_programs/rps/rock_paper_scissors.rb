@@ -1,6 +1,6 @@
 OPTIONS = ["rock", "paper", "scissors", "lizard", "spock"]
 
-WINNERS = {
+WINNING_PAIRS = {
   rock: ["scissors", "lizard"],
   paper: ["rock", "spock"],
   scissors: ["paper", "lizard"],
@@ -22,7 +22,7 @@ def convert_abbreviations(user_choice)
     prompt("Did you mean scissors or spock? Please specify")
     user_choice = gets.chomp.downcase
 
-  # If user provided valid abbreviation, convert to full answer
+  # Convert valid abbreviations to full answer
   elsif abbreviations.include?(user_choice)
     user_choice = OPTIONS[abbreviations.find_index(user_choice)]
   end
@@ -42,27 +42,47 @@ def get_choice
   user_choice
 end
 
-def display_results(user_choice, computer_choice, user_wins, computer_wins)
-  if WINNERS[user_choice.to_sym].include?(computer_choice)
+def determine_winner(user_choice, computer_choice)
+  if WINNING_PAIRS[user_choice.to_sym].include?(computer_choice)
+    "user"
+  elsif WINNING_PAIRS[computer_choice.to_sym].include?(user_choice)
+    "computer"
+  else
+    "tie"
+  end
+end
+
+def display_results(round_winner)
+  if round_winner == "user"
     prompt("You win this round. Keep it up!")
-    user_wins << true
-  elsif WINNERS[computer_choice.to_sym].include?(user_choice)
+  elsif round_winner == "computer"
     prompt("Computer wins this round. Better luck next time!")
-    computer_wins << true
   else
     prompt("It's a tie!")
   end
 end
 
+def update_score(round_winner, user_wins, computer_wins)
+  if round_winner == "user"
+    user_wins << true
+  elsif round_winner == "computer"
+    computer_wins << true
+  end
+end
+
 def game_over?(user_wins, computer_wins)
-  if user_wins.length == 3
-    prompt("Game over, you reached three wins first. Congratulations!")
-    true
-  elsif computer_wins.length == 3
-    prompt("Game over, the computer reached three wins first. Unlucky!")
+  if user_wins.length == 3 || computer_wins.length == 3
     true
   else
     false
+  end
+end
+
+def display_final_score(user_wins, computer_wins)
+  if user_wins.length == 3
+    prompt("Game over, you reached three wins first. Congratulations!")
+  elsif computer_wins.length == 3
+    prompt("Game over, the computer reached three wins first. Unlucky!")
   end
 end
 
@@ -77,8 +97,14 @@ loop do
   computer_choice = OPTIONS.sample
   prompt("Computer chose #{computer_choice}")
 
-  display_results(user_choice, computer_choice, user_wins, computer_wins)
-  break if game_over?(user_wins, computer_wins)
+  round_winner = determine_winner(user_choice, computer_choice)
+  display_results(round_winner)
+  update_score(round_winner, user_wins, computer_wins)
+
+  if game_over?(user_wins, computer_wins)
+    display_final_score(user_wins, computer_wins)
+    break
+  end
 
   prompt("Do you want to keep going? (enter 'Y' to confirm)")
   repeat = gets.chomp
