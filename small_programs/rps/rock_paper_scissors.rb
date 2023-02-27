@@ -52,43 +52,48 @@ def determine_winner(user_choice, computer_choice)
   end
 end
 
-def display_results(round_winner)
+def update_score(round_winner, scores)
   if round_winner == "user"
-    prompt("You win this round. Keep it up!")
+    scores[:user] += 1
   elsif round_winner == "computer"
-    prompt("Computer wins this round. Better luck next time!")
+    scores[:computer] += 1
+  end
+end
+
+def display_results(round_winner, scores)
+  if round_winner == "user"
+    prompt("You win this round. Well done!")
+  elsif round_winner == "computer"
+    prompt("Computer wins this round. Unlucky!")
   else
     prompt("It's a tie!")
   end
+  prompt("Current score: You #{scores[:user]} - Computer " \
+  "#{scores[:computer]}")
 end
 
-def update_score(round_winner, user_wins, computer_wins)
-  if round_winner == "user"
-    user_wins << true
-  elsif round_winner == "computer"
-    computer_wins << true
-  end
-end
-
-def game_over?(user_wins, computer_wins)
-  if user_wins.length == 3 || computer_wins.length == 3
+def game_over?(scores)
+  if scores[:user] == 3 || scores[:computer] == 3
     true
   else
     false
   end
 end
 
-def display_final_score(user_wins, computer_wins)
-  if user_wins.length == 3
-    prompt("Game over, you reached three wins first. Congratulations!")
-  elsif computer_wins.length == 3
-    prompt("Game over, the computer reached three wins first. Unlucky!")
+def display_final_score(scores)
+  if scores[:user] == 3
+    prompt("Game over. You reached three wins first. Congratulations!")
+  elsif scores[:computer] == 3
+    prompt("Game over. The computer reached three wins first. " \
+      "Better luck next time!")
   end
 end
 
 prompt("Welcome to Rock Paper Scissors")
-user_wins = []
-computer_wins = []
+scores = {
+  user: 0,
+  computer: 0
+}
 
 loop do
   user_choice = get_choice
@@ -98,11 +103,11 @@ loop do
   prompt("Computer chose #{computer_choice}")
 
   round_winner = determine_winner(user_choice, computer_choice)
-  display_results(round_winner)
-  update_score(round_winner, user_wins, computer_wins)
+  update_score(round_winner, scores)
+  display_results(round_winner, scores)
 
-  if game_over?(user_wins, computer_wins)
-    display_final_score(user_wins, computer_wins)
+  if game_over?(scores)
+    display_final_score(scores)
     break
   end
 
